@@ -5,11 +5,14 @@ using namespace std;
 
 int main() {
     BST t;
-    t.insert(20);
-    t.insert(25);
-    t.insert(15);
-    t.insert(10);
-    t.insert(30);
+    t.insert(1);
+    t.insert(2);
+    t.insert(3);
+    t.insert(4);
+    t.insert(5);
+    t.insert(6);
+    t.insert(7);
+    t.Balance();
     t.display(0);
     return 0;
 }

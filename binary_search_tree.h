@@ -2,7 +2,7 @@
 #define BINARY_SEARCH_TREE_H
 
 #include <iostream>
-#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -16,6 +16,7 @@ class BST {
 
     node* root;
 
+    // deleting all tree
     node* makeEmpty(node* t) {
         if(t == NULL)
             return NULL;
@@ -27,6 +28,7 @@ class BST {
         return NULL;
     }
 
+    // adding new element
     node* insert(int x, node* t)
     {
         if(t == NULL)
@@ -42,6 +44,7 @@ class BST {
         return t;
     }
 
+    // find minimum data
     node* findMin(node* t)
     {
         if(t == NULL)
@@ -52,6 +55,7 @@ class BST {
             return findMin(t->left);
     }
 
+    // find maximum data
     node* findMax(node* t) {
         if(t == NULL)
             return NULL;
@@ -61,6 +65,7 @@ class BST {
             return findMax(t->right);
     }
 
+    // remove element that contains input data
     node* remove(int x, node* t) {
         node* temp;
         if(t == NULL)
@@ -88,14 +93,16 @@ class BST {
         return t;
     }
 
-    void inorder(node* t) {
+    // store all elements in sorted order
+    void inorder(node* t, vector<node*> &nodes) {
         if(t == NULL)
             return;
-        inorder(t->left);
-        cout << t->data << " ";
-        inorder(t->right);
+        inorder(t->left, nodes);
+        nodes.push_back(t);
+        inorder(t->right, nodes);
     }
 
+    // print tree by level
     void bylevel(node* t, int lvl) {
         if(t == NULL)
             return;
@@ -106,6 +113,7 @@ class BST {
         bylevel(t->left, lvl+1);
     }
 
+    // find elemnt that contents input data
     node* find(node* t, int x) {
         if(t == NULL)
             return NULL;
@@ -115,6 +123,27 @@ class BST {
             return find(t->right, x);
         else
             return t;
+    }
+
+    // build tree from vector
+    node* BuildSimp(vector<node*> &nodes, int start, int end)
+    {
+        if (start > end)
+            return NULL;
+        int mid = (start + end) / 2;
+        node* root = nodes[mid];
+        root->left  = BuildSimp(nodes, start, mid-1);
+        root->right = BuildSimp(nodes, mid+1, end);
+        return root;
+    }
+
+    // build balanced tree
+    node* BuildPwp(node* t)
+    {
+        vector<node*> nodes;
+        inorder(t, nodes);
+        int n = nodes.size();
+        return BuildSimp(nodes, 0, n-1);
     }
 
 public:
@@ -141,6 +170,11 @@ public:
 
     void search(int x) {
         root = find(root, x);
+    }
+
+    void Balance()
+    {
+        root = BuildPwp(root);
     }
 };
 
