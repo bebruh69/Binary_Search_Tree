@@ -3,12 +3,15 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
-class BST {
+class BST
+{
 
-    struct node {
+    struct node
+    {
         int data;
         node* left;
         node* right;
@@ -17,7 +20,8 @@ class BST {
     node* root;
 
     // deleting all tree
-    node* makeEmpty(node* t) {
+    node* makeEmpty(node* t)
+    {
         if(t == NULL)
             return NULL;
         {
@@ -56,7 +60,8 @@ class BST {
     }
 
     // find maximum data
-    node* findMax(node* t) {
+    node* findMax(node* t)
+    {
         if(t == NULL)
             return NULL;
         else if(t->right == NULL)
@@ -66,7 +71,8 @@ class BST {
     }
 
     // remove element that contains input data
-    node* remove(int x, node* t) {
+    node* remove(int x, node* t)
+    {
         node* temp;
         if(t == NULL)
             return NULL;
@@ -94,7 +100,8 @@ class BST {
     }
 
     // store all elements in sorted order
-    void inorder(node* t, vector<node*> &nodes) {
+    void inorder(node* t, vector<node*> &nodes)
+    {
         if(t == NULL)
             return;
         inorder(t->left, nodes);
@@ -103,7 +110,8 @@ class BST {
     }
 
     // print tree by level
-    void bylevel(node* t, int lvl) {
+    void bylevel(node* t, int lvl)
+    {
         if(t == NULL)
             return;
         bylevel(t->right, lvl+1);
@@ -114,7 +122,8 @@ class BST {
     }
 
     // find elemnt that contents input data
-    node* find(node* t, int x) {
+    node* find(node* t, int x)
+    {
         if(t == NULL)
             return NULL;
         else if(x < t->data)
@@ -146,35 +155,126 @@ class BST {
         return BuildSimp(nodes, 0, n-1);
     }
 
+    int MaxHeight(node* t)
+    {
+        if (t == NULL)
+            return 0;
+        if (t->left == NULL && t->right == NULL)
+            return 1;
+        if (t->left == NULL)
+            return MaxHeight(t->right) + 1;
+        if (t->right == NULL)
+            return MaxHeight(t->left) + 1;
+        return max(MaxHeight(t->right), MaxHeight(t->left)) + 1;
+    }
+
+    int MinHeight(node* t)
+    {
+        if (t == NULL)
+            return 0;
+        if (t->left == NULL && t->right == NULL)
+            return 1;
+        if (t->left == NULL)
+            return MinHeight(t->right) + 1;
+        if (t->right == NULL)
+            return MinHeight(t->left) + 1;
+        return min(MinHeight(t->right), MinHeight(t->left)) + 1;
+    }
+
+    bool IsBalanced (node* t)
+    {
+        if (t == NULL)
+            return true;
+        if (MaxHeight(t->right) - MinHeight(t->left) > 1 || MaxHeight(t->left) - MinHeight(t->right) > 1)
+            return false;
+        return true;
+    }
+
 public:
-    BST() {
+    BST()
+    {
         root = NULL;
     }
 
-    ~BST() {
+    ~BST()
+    {
         root = makeEmpty(root);
     }
 
-    void insert(int x) {
+    node* getright()
+    {
+        return root->right;
+    }
+
+    node* getleft()
+    {
+        return root->left;
+    }
+
+    int getdata()
+    {
+        return root->data;
+    }
+
+    void insert(int x)
+    {
         root = insert(x, root);
     }
 
-    void remove(int x) {
+    void remove(int x)
+    {
         root = remove(x, root);
     }
 
-    void display(int lvl) {
+    void display(int lvl)
+    {
         bylevel(root, lvl);
         cout << endl;
     }
 
-    void search(int x) {
+    void search(int x)
+    {
         root = find(root, x);
     }
 
-    void Balance()
+    void balance()
     {
         root = BuildPwp(root);
+    }
+
+    int maxh()
+    {
+        return MaxHeight(root);
+    }
+
+    int minh()
+    {
+        return MinHeight(root);
+    }
+
+    int maxhLEFT()
+    {
+        return MaxHeight(root->left)+2;
+    }
+
+    int minhLEFT()
+    {
+        return MinHeight(root->left)+1;
+    }
+
+    int maxhRIGHT()
+    {
+        return MaxHeight(root->right)+1;
+    }
+
+    int minhRIGHT()
+    {
+        return MinHeight(root->right)+1;
+    }
+
+    bool isbalanced()
+    {
+        return IsBalanced(root);
     }
 };
 
